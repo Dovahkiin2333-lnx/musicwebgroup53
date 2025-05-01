@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{url_for("static", filename="css/search-result.css")}}">
+{% endblock %}
+{% block title %}Search-Content{% endblock %}
+
+{% block body %}
+<main class="search-container">
+    {% for item in results %}
+    {%if item.content_type == "song" %}
+    <a href="{{ url_for('song.song_detail', song_id = item.content_id) }}" class="song-card">
+        <div class="song-cover">
+            {% if item.image_url %}
+            <img src="{{ url_for('song.serve_cover', filename= item.image_url) }}" 
+                alt="{{ item.title }} cover" class="song-cover-img">
+            {% else %}
+            <div class="song-cover-placeholder">
+                {{ item.title|first|upper }}
+            </div>
+            <div>{{item.image_url}}</div>
+            {% endif %}
+        </div>
+        <div class="song-info">
+            <h3 class="song-title">{{ item.title }}</h3>
+            <p class="song-artist">{{ item.artist }}</p>
+        </div>
+    </a>
+    {%endif%}
+    {% endfor %}
+    {% for item in results %}
+    {%if item.content_type == "user" %}
+    <a href="{{ url_for('profile.public_profile', user_id = item.content_id) }}" class="user-profile">
+        <div class="user-name">
+            {{item.title}}
+        </div>
+    </a>
+    {%endif%}
+    {% endfor %}
+</main>
+{%endblock%}

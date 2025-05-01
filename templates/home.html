@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}LivGroove - Home{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+<main class="home-container">
+    <aside class="home-categories">
+        <form class="category-form" method="post" action="{{ url_for('home.category') }}">
+            {% for category in ['happy','relax','modern','vocal','432Hz'] %}
+            <button class="category-btn" type="submit" name="keyword" value="{{ category }}">
+                {{ category|capitalize }}
+            </button>
+            {% endfor %}
+        </form>
+    </aside>
+    <section class="home-content">
+        <div class="home-songs">
+            <h2 class="section-title">Latest Releases</h2>
+            {% if songs %}
+            <div class="song-grid">
+                {% for song in songs %}
+                <a href="{{ url_for('song.song_detail', song_id = song.id) }}" class="song-card">
+                    <div class="song-cover">
+                        {% if song.cover_filename %}
+                        <img src="{{ url_for('song.serve_cover', filename=song.cover_path) }}" 
+                            alt="{{ song.title }} cover" class="song-cover-img">
+                        {% else %}
+                        <div class="song-cover-placeholder">
+                            {{ song.title|first|upper }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="song-info">
+                        <h3 class="song-title">{{ song.title }}</h3>
+                        <p class="song-artist">{{ song.artist }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-songs">
+                <p>No songs found</p>
+            </div>
+            {% endif %}
+        </div>
+        {% if recs %}
+        <div class="rec-songs">
+            <h2 class="section-title">Recommended For You</h2>
+            <div class="song-grid">
+                {% for song in recs %}
+                <a href="{{ url_for('song.song_detail', song_id = song.id) }}" class="song-card">
+                    <div class="song-cover">
+                        {% if song.cover_filename %}
+                        <img src="{{ url_for('song.serve_cover', filename=song.cover_path) }}" 
+                            alt="{{ song.title }} cover" class="song-cover-img">
+                        {% else %}
+                        <div class="song-cover-placeholder">
+                            {{ song.title|first|upper }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="song-info">
+                        <h3 class="song-title">{{ song.title }}</h3>
+                        <p class="song-artist">{{ song.artist }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+    </section>
+    <aside class="home-sidebar">
+    </aside>
+</main>
+{% endblock %}

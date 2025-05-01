@@ -1,0 +1,36 @@
+<div class="post-container">
+    {% for song in songs %}
+    <div class="post-item">
+        <a href="{{ url_for('song.song_detail', song_id = song.id) }}" class="song-card">
+            <div class="song-cover">
+                {% if song.cover_filename %}
+                <img src="{{ url_for('song.serve_cover', filename=song.cover_path) }}" 
+                    alt="{{ song.title }} cover" class="song-cover-img">
+                {% else %}
+                <div class="song-cover-placeholder">
+                    {{ song.title|first|upper }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="song-info">
+                <h3 class="song-title">{{ song.title }}</h3>
+                <p class="song-artist">{{ song.artist }}</p>
+            </div>
+        </a>
+        {%if current_user.id == song.uploader_id%}
+        <div class="post-actions">
+            <button 
+                onclick="deleteSong('{{ song.id }}', this)" 
+                class="delete-btn"
+            >
+                Delete
+            </button>
+        </div>
+        {%endif%}
+    </div>
+    {% else %}
+    <p class="empty-message">You haven't posted any songs yet</p>
+    {% endfor %}
+</div>
+
+

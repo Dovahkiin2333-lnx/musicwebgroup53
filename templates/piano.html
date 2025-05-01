@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{url_for("static", filename="css/piano.css")}}">
+{% endblock %}
+{% block title %}Workspace{% endblock %}
+
+{% block body %}
+<main class="piano-container">
+<div class="piano" id="piano">
+</div>
+{% if current_user.is_authenticated %}
+<div class="controls">
+    <button id="startRecording">Start Recording</button>
+    <button id="stopRecording" disabled>Stop Recording</button>
+    <button id="downloadRecording" disabled>Download</button>
+</div>
+<div id="recordingStatus">Not Recording</div>
+{%endif%}
+</main>
+<script src="{{url_for("static", filename="js/piano.js")}}"></script>
+{%endblock%}

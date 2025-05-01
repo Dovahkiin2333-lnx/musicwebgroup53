@@ -1,0 +1,117 @@
+.profile-container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 2rem;
+display: flex;
+flex-direction: column;
+gap: 2rem;
+}
+
+.profile-header {
+text-align: center;
+padding: 2rem 0;
+border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-avatar-container {
+margin: 0 auto 1.5rem;
+}
+
+.profile-avatar {
+width: 120px;
+height: 120px;
+border-radius: 50%;
+object-fit: cover;
+border: 3px solid #4a6fa5;
+}
+
+.profile-username {
+font-size: 2rem;
+margin-bottom: 0.5rem;
+color: #333;
+}
+
+.profile-description {
+font-size: 1.1rem;
+color: #666;
+max-width: 600px;
+margin: 0 auto;
+}
+
+.profile-nav-section {
+display: flex;
+gap: 2rem;
+min-height: 400px;
+}
+
+.profile-nav {
+flex: 0 0 200px;
+background: #f8f9fa;
+border-radius: 8px;
+padding: 1rem 0;
+}
+
+.profile-nav-list {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.profile-nav-item {
+padding: 0.8rem 1.5rem;
+cursor: pointer;
+transition: all 0.2s;
+border-left: 3px solid transparent;
+}
+
+.profile-nav-item:hover {
+background: #e9ecef;
+border-left-color: #4a6fa5;
+}
+
+.profile-nav-item.active {
+background: #e9ecef;
+border-left-color: #4a6fa5;
+font-weight: bold;
+}
+
+.profile-content {
+flex: 1;
+background: #f8f9fa;
+border-radius: 8px;
+padding: 2rem;
+}
+
+.profile-content-placeholder {
+text-align: center;
+color: #999;
+padding: 2rem;
+}
+
+.profile-actions {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-bottom: 10px;
+}
+
+.btn-friend {
+padding: 8px 16px;
+border-radius: 20px;
+border: none;
+background-color: #1db954;
+color: white;
+font-weight: bold;
+cursor: pointer;
+transition: all 0.3s;
+}
+
+.btn-friend:hover:not(:disabled) {
+background-color: #1ed760;
+transform: scale(1.05);
+}
+
+.btn-friend:disabled {
+background-color: #535353;
+cursor: default;
+}

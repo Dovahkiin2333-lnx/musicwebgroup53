@@ -1,0 +1,58 @@
+.notification-container {
+    position: relative;
+    margin-left: 15px;
+}
+
+.notification-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.notification-icon:hover {
+    transform: scale(1.1);
+}
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    padding: 10px;
+}
+
+.notification-dropdown.show {
+    display: block;
+}
+
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.notification-item {
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+.notification-content {
+    font-size: 14px;
+    color: #333;
+}
+
+.notification-empty {
+    text-align: center;
+    padding: 10px;
+    color: #666;
+}

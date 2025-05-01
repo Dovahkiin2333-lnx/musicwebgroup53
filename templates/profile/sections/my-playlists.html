@@ -1,0 +1,46 @@
+<div class="playlist-container" style="max-width: 800px; margin: 0 auto;">
+    <div class="playlist-layout">
+        <div class="playlist-left">
+            {%if current_user.id == playlists[0].user_id%}
+            <div class="playlist-create">
+                <input 
+                    type="text" 
+                    id="newPlaylistName" 
+                    placeholder="Playlist name..."  
+                    class="playlist-input"
+                >
+                <button 
+                    onclick="createPlaylist()" 
+                    class="playlist-add-btn"
+                >
+                    Add
+                </button>
+            </div>
+            {%endif%}
+            
+            <div class="playlist-list">
+                <table class="playlist-table">
+                    {% for playlist in playlists %}
+                    {% if playlist.title != "My Collection"%}
+                    <tr 
+                        class="playlist-row {% if loop.first %}active{% endif %}" 
+                        onclick="loadPlaylistSongs('{{ playlist.id }}', this)"
+                        data-playlist-id="{{ playlist.id }}"
+                    >
+                        <td>{{ playlist.title }}</td>
+                    </tr>
+                    {%endif%}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        
+        <div class="playlist-right">
+            <div id="playlistContent">
+                please select a playlist
+            </div>
+        </div>
+    </div>
+</div>
+
+

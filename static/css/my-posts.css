@@ -1,0 +1,38 @@
+.post-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.post-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.delete-btn {
+    padding: 6px 12px;
+    background-color: #ffebee;
+    color: #c62828;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #ffcdd2;
+}
+
+.empty-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #666;
+    padding: 40px 0;
+}
+

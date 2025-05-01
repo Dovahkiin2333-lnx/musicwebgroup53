@@ -1,0 +1,47 @@
+{% if current_user.is_authenticated %}
+<form action="{{url_for("profile.profile_setting")}}" method="post" class="profile-form" id="update-unameForm">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+        <label for="new-username">New Username</label>
+        <input type="text" id="new-username" name="new_username" class="form-control" 
+               value="{{ current_user.username }}" required>
+    </div>
+    <button type="button" class="btn-submit" onclick="submitForm('update-uname')">Update</button>
+</form>
+
+<form action="{{url_for("profile.profile_setting")}}" method="post" class="profile-form" id="update-descriptionForm">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+        <label for="new-description">Description</label>
+        <textarea id="new-description" name="new_description" class="form-control" 
+                  rows="3">{{ profile.description or '' }}</textarea>
+    </div>
+    <button type="button" class="btn-submit" onclick="submitForm('update-description')">Update</button>
+</form>
+{% endif %}
+
+<form action="{{url_for("profile.profile_setting")}}" method="post" class="profile-form" id="change-passwordForm">
+    <div class="form-group">
+        <label for="current-password">Current Password</label>
+        <input type="password" id="current-password" name="current_password" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="new-password">New Password</label>
+        <input type="password" id="new-password" name="new_password" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" name="confirm_password" class="form-control" required>
+    </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-actions">
+        <button type="button" class="btn-submit" onclick="submitForm('change-password')">Commit</button>
+        {% if current_user.role in ['admin', 'sadmin'] %}
+        <a href="{{url_for("admin.manage")}}" class="btn-secondary">Manage</a>
+        <a href="{{url_for("admin.audit")}}" class="btn-secondary">Audit</a>
+        <a href="{{url_for("admin.reports")}}" class="btn-secondary">Reports</a>
+        {% endif %} 
+    </div>
+</form>
+
+<div id="settingStatus" class="form-status"></div>

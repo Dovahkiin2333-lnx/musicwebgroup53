@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/base.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/notifications.css')}}">
+    {% block head %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo"><a class="nav-home" href="{{url_for("home.index")}}">LivGroove</a></div>
+        <div class="nav-search">
+            <form action="{{url_for('search.search')}}" class="nav-search-form" method="get">
+                <input type="search" class="nav-search-box" placeholder="search..." name="search-content">
+                <button class="nav-btn" type="submit">Search</button>
+            </form>
+        </div>
+            
+            {% if current_user.is_authenticated %}
+            <div class="notification-container">
+                <img src="{{ url_for('static', filename='images/notifications.jpg') }}" 
+                     alt="Notifications" 
+                     class="notification-icon"
+                     id="notificationIcon">
+                
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-list">
+                        {% for notification in current_user.received_notifications | reverse %}
+                        <div class="notification-item">
+                            <div class="notification-content">{{ notification.content }}</div>
+                        </div>
+                        {% else %}
+                        <div class="notification-empty">No notifications</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% if current_user.is_authenticated %}
+        <div class="user-action">
+            <a class="nav-user-profile-link" href="{{ url_for('profile.my_profile') }}">{{current_user.username }}</a>
+            <a class="nav-user-logout-link" href="{{ url_for('auth.logout') }}">Logout</a>
+        </div>
+
+        {% else %}
+        <div class="auth-buttons">
+            <a href="{{url_for('auth.login')}}" class="nav-login-link"><button class="nav-btn">Login</button></a>
+            <a href="{{url_for('auth.register')}}" class="nav-Register-link"><button class="nav-btn">Register</button></a>
+        </div>
+        {% endif %}
+    </nav>
+
+    {% block body %} {% endblock %}
+    <script src="{{url_for('static', filename="js/notifications.js")}}"></script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/register.css') }}">
+{% endblock %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="form-branding">
+        <h1 class="logo">LivGroove</h1>
+        <p class="tagline">Cherish every touching melody</p>
+        <p class="tagline">Witness every brave attempt</p>
+        <p class="tagline">Guard every pure passion</p>
+    </div>
+
+    <div class="register-box">
+        <h2 class="form-title">Create Your Account</h2>
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control form-width" id="email" name="email">
+            </div>
+
+            <div class="mb-3">
+                <label for="verificationCode" class="form-label">VCode</label>
+                <div class="input-group form-width">
+                    <input type="text" class="form-control" id="captcha" name="captcha">
+                    <button class="btn btn-outline-secondary" type="button" id="getVerificationCode">Get Vcode</button>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control form-width" id="username" name="username">
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control form-width" id="password" name="password">
+            </div>
+
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control form-width" id="confirmPassword" name="password_confirm">
+            </div>
+
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{{url_for('static', filename='js/register.js')}}"></script>
+{% endblock %}

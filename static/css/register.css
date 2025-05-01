@@ -1,0 +1,130 @@
+.form-center {
+    max-width: 40%;
+    margin: auto;
+}
+
+.form-width {
+    max-width: 100%;
+}
+
+.form-margin {
+    margin-top: 100px;
+}
+
+.form-branding {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-size: 36px;
+    font-weight: bold;
+    color: #FFD700;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    color: #FFD700;
+    margin: 2px 0;
+    font-size: 15px;
+}
+
+
+body {
+    background-color: #0F1A3C;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;   
+    align-items: center;      
+    justify-content: center; 
+    min-height: 100vh;
+    gap: 20px;   
+}
+
+
+.register-box {
+    background-color: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 450px;
+    color: #0F1A3C;
+}
+
+
+label {
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #0F1A3C;
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #F3753A;
+}
+
+.input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.input-group input {
+    flex: 1;
+}
+
+.input-group button {
+    white-space: nowrap;
+    font-size: 14px;
+    padding: 8px 8px;
+    height: 42px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #ffff;
+    color: #0F1A3C;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.input-group button:hover {
+    background-color: #F3753A;
+    border-color: #aaa;
+}
+
+.btn-primary {
+    background-color: #F3753A;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #e45b1d;
+}

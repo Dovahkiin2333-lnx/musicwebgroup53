@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block head%}
+    <link rel="stylesheet" href="{{url_for("static", filename="css/profile.css")}}">
+    <link rel="stylesheet" href="{{url_for("static", filename="css/profile-upload.css")}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/messages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my-collection.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my-playlists.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my-posts.css') }}">
+{% endblock %}
+{% block title%}Profile{%endblock%}
+{% block body %}
+<main class="profile-container">
+    <section class="profile-header">
+        <div class="profile-avatar-container">
+            <label for="avatarUpload" style="cursor: pointer;">
+                <img id="userAvatar"
+     src="{{ 
+         url_for('profile.get_avatar', user_id=profile.user_id,
+          filename=profile.avatar_filename)
+         if profile and profile.avatar_filename 
+         and
+        (profile.avatar_approved or current_user.id == profile.user_id)
+         else url_for('static', filename='images/default-user-avatar.jpg')
+     }}"
+     alt="User Avatar" class="profile-avatar">
+
+            </label>
+            {% if current_user.is_authenticated and current_user.id == profile.user_id %}
+            <input 
+    type="file" 
+    id="avatarUpload" 
+    accept="image/*" 
+    style="display: none;"
+    data-upload-url="{{ url_for('upload.upload_avatar') }}"
+    data-csrf-token="{{ csrf_token() }}"
+>
+            {% endif %}
+        </div>
+        <div class="profile-actions">
+            <h1 id="username" class="profile-username">{{ user.username }}</h1>
+            {% if current_user.is_authenticated and current_user.id != profile.user_id %}
+            <button id="friendButton" 
+                    class="btn-friend"
+                    data-user-id="{{ current_user.id }}"
+                    data-friend-id="{{ profile.user_id }}"
+                    data-status="{{ friendship_status }}">
+                {{ 'Friends' if friendship_status == 'friends' else 
+                   'Add Friend' if friendship_status == 'none' else 
+                   'Request Sent' if friendship_status == 'sent' else 
+                   'Accept Request' if friendship_status == 'received' else 
+                   'Add Friend' }}
+            </button>
+            {% endif %}
+        </div>
+        <p id="userDescription" class="profile-description">
+            {{
+                profile.description 
+                if profile and profile.description and (profile.description_approved or current_user.id == profile.user_id)
+                else "No description available"
+            }}
+        </p>
+        
+    </section>
+    <section class="profile-nav-section">
+        <nav class="profile-nav">
+            <ul class="profile-nav-list">
+                {% if current_user.is_authenticated and current_user.id == profile.user_id %}
+                <li class="profile-nav-item" data-section="collection">My Collection</li>
+                <li class="profile-nav-item" data-section="playlists" data-user-id="{{ profile.user_id }}">My Playlists</li>
+                <li class="profile-nav-item" data-section="messages">Messages</li>
+                <li class="profile-nav-item" data-section="music" data-user-id="{{ profile.user_id }}">My Post</li>
+                <a href="{{url_for("profile.piano")}}" class="piano"><li class="profile-nav-item" data-section="workspace">Workspace</li></a>
+                <li class="profile-nav-item" data-section="upload">Upload Music</li>
+                <li class="profile-nav-item" data-section="settings">Settings</li>
+                {%else%}
+                <li class="profile-nav-item" data-section="music" data-user-id="{{ profile.user_id }}">Posted</li>
+                <li class="profile-nav-item" data-section="playlists"  data-user-id="{{ profile.user_id }}">Playlists</li>
+                {% endif %}
+            </ul>
+        </nav>
+        
+        <div id="profileContent" class="profile-content">
+            <div class="profile-content-placeholder">
+                Select a section to view content
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="{{url_for('static', filename='js/friendship.js')}}"></script>
+<script src="{{ url_for('static', filename='js/profile-upload.js') }}"></script>
+<script src="{{url_for("static", filename="js/avatar.js")}}"></script>
+<script src="{{ url_for('static', filename='js/setting.js') }}"></script>
+<script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+<script src="{{ url_for('static', filename='js/my-collection.js') }}"></script>
+<script src="{{ url_for('static', filename='js/my-playlists.js') }}"></script>
+<script src="{{ url_for('static', filename='js/my-posts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/messages.js') }}"></script>
+{% endblock %}

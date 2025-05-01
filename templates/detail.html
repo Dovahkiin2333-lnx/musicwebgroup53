@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/detail.css') }}">
+{% endblock %}
+
+{% block title %}{{ song.title }} - LivGroove{% endblock %}
+
+{% block body %}
+<main class="song-detail-container">
+    <div class="song-header">
+        <div class="uploader-info">
+            Uploader: <a href="{{ url_for('profile.public_profile', user_id=song.uploader.id) }}" class="uploader-link">{{ song.uploader.username }}</a>
+        </div>
+        <div class="action-buttons">
+            {% if current_user.is_authenticated %}
+                {% if is_collected %}
+                <form action="{{ url_for('song.uncollect_song', song_id=song.id) }}" method="POST" class="collect-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="collect-btn collected">★</button>
+                </form>
+                {% else %}
+                <form action="{{ url_for('song.collect_song', song_id=song.id) }}" method="POST" class="collect-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="collect-btn">☆</button>
+                </form>
+                {% endif %}
+                
+                <div class="add-to-playlist">
+                    <form action="{{ url_for('song.add_to_playlist', song_id=song.id) }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <select name="playlist_id" onchange="this.form.submit()">
+                            <option value="" selected disabled>add to playlist</option>
+                            {% for playlist in current_user.playlists %}
+                            {%if playlist.title != "My Collection"%}
+                                <option value="{{ playlist.id }}">{{ playlist.title }}</option>
+                                {%endif%}
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+                
+                {% if is_liked %}
+                <form action="{{ url_for('song.dislike_song', song_id=song.id) }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="dislike-btn">Dislike ♥</button>
+                </form>
+                {% else %}
+                <form action="{{ url_for('song.like_song', song_id=song.id) }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="like-btn">Like ♡</button>
+                </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="song-content">
+        <h1 class="song-title">{{ song.title }}</h1>
+        <h2 class="song-artist">{{ song.artist }}</h2>
+        
+        <div class="song-cover-container">
+            {% if song.cover_filename %}
+            <img src="{{ url_for('song.serve_cover', filename=song.cover_path) }}" 
+                 alt="{{ song.title }} cover" 
+                 class="song-cover">
+            {% else %}
+            <div class="song-cover-placeholder">
+                {{ song.title|first|upper }}{{ song.artist|first|upper }}
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+<div class="song-comments">
+    <h3 class="comments-title">Comments</h3>
+    {% if current_user.is_authenticated %}
+    <form class="comment-form" method="POST" action="{{ url_for('song.add_comment', song_id=song.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <textarea name="content" placeholder="Write your comment..." required></textarea>
+        <button type="submit" class="submit-comment">Post Comment</button>
+    </form>
+    {% else %}
+    <div class="login-to-comment">
+        <a href="{{ url_for('auth.login') }}">Log in</a> to post a comment
+    </div>
+    {% endif %}
+    
+    <div class="comments-list">
+        {% for comment in song.comments if comment.is_approved %}
+        <div class="comment-item">
+            <div class="comment-header">
+                <a href="{{ url_for('profile.public_profile', user_id=comment.user.id) }}" class="comment-user">
+                    <img src="{{ url_for('profile.get_avatar', user_id=comment.user.id, filename=comment.user.profile.avatar_filename) if comment.user.profile and comment.user.profile.avatar_filename else url_for('static', filename='images/default-user-avatar.jpg') }}"
+                         alt="{{ comment.user.username }}" class="comment-avatar">
+                    <span>{{ comment.user.username }}</span>
+                </a>
+                <span class="comment-date">{{ comment.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+            <div class="comment-content">{{ comment.content }}</div>
+            
+            {% if current_user.is_authenticated and current_user.id == comment.user_id %}
+            <form class="delete-comment-form" method="POST" action="{{ url_for('song.delete_comment', comment_id=comment.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type="submit" class="delete-comment">Delete</button>
+            </form>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="no-comments">No comments yet. Be the first to comment!</div>
+        {% endfor %}
+    </div>
+</div>
+
+
+    <div class="song-player">
+        <audio id="audioPlayer" controls class="audio-player">
+            <source src="{{ url_for('song.serve_audio', filename=song.audio_path) }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+</main>
+
+
+{% endblock %}

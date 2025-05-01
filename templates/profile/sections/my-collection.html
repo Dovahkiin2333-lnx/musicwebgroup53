@@ -1,0 +1,30 @@
+<main class="collection-container">
+    <section class="collected-songs">
+        {% if songs %}
+        <div class="song-grid">
+            {% for song in songs %}
+            <a href="{{ url_for('song.song_detail', song_id = song.id) }}" class="song-card">
+                <div class="song-cover">
+                    {% if song.cover_filename %}
+                    <img src="{{ url_for('song.serve_cover', filename=song.cover_path) }}" 
+                        alt="{{ song.title }} cover" class="song-cover-img">
+                    {% else %}
+                    <div class="song-cover-placeholder">
+                        {{ song.title|first|upper }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="song-info">
+                    <h3 class="song-title">{{ song.title }}</h3>
+                    <p class="song-artist">{{ song.artist }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-songs">
+            <p>No songs found in this category</p>
+        </div>
+        {% endif %}
+    </section>
+</main>

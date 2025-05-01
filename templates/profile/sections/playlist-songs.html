@@ -1,0 +1,48 @@
+<div class="song-cards-container">
+    {% for song in songs %}
+    <a href="{{ url_for('song.song_detail', song_id = song.id) }}" class="song-card">
+        <div class="song-cover">
+            {% if song.cover_filename %}
+            <img src="{{ url_for('song.serve_cover', filename=song.cover_path) }}" 
+                alt="{{ song.title }} cover" class="song-cover-img">
+            {% else %}
+            <div class="song-cover-placeholder">
+                {{ song.title|first|upper }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="song-info">
+            <h3 class="song-title">{{ song.title }}</h3>
+            <p class="song-artist">{{ song.artist }}</p>
+        </div>
+    </a>
+    {% else %}
+    <p class="empty-playlist">This playlist is empty</p>
+    {% endfor %}
+</div>
+
+{%if current_user.id == owner%}
+<div class="control-group">
+    <input 
+        type="text" 
+        id="renamePlaylistInput" 
+        placeholder="New name..." 
+        class="playlist-input"
+    >
+    <button 
+        onclick="renamePlaylist('{{ playlist_id }}')" 
+        class="control-btn"
+    >
+        Rename
+    </button>
+    
+    <button 
+        onclick="togglePlaylistPrivacy('{{ playlist_id }}', {{ 'true' if is_public else 'false' }})" 
+        class="control-btn privacy-btn {{ 'public' if is_public else 'private' }}"
+        id="privacyToggleBtn"
+    >
+        {{ 'Set Private' if is_public else 'Set Public' }}
+    </button>
+</div>
+{%endif%}
+</div>

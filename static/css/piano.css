@@ -1,0 +1,76 @@
+.piano-container {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.piano {
+    display: flex;
+    position: relative;
+}
+
+.key {
+    position: relative;
+    cursor: pointer;
+}
+
+.white-key {
+    width: 60px;
+    height: 200px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.black-key {
+    width: 36px;
+    height: 120px;
+    background-color: black;
+    margin-left: -18px;
+    margin-right: -18px;
+    z-index: 2;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.key.active {
+    background-color: #ddd;
+}
+
+.black-key.active {
+    background-color: #555;
+}
+
+.key-label {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+}
+
+.black-key .key-label {
+    color: white;
+}
+
+.controls button {
+    padding: 8px 16px;
+    margin: 0 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+#recordingStatus {
+    padding-top: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}

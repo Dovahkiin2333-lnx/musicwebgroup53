@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/audit.css')}}">
+{% endblock %}
+{% block title %}Audit{% endblock %}
+
+{% block body %}
+<main class="audit-container">
+    <div class="audit-sidebar">
+        <button class="audit-option active" data-type="avatars">Avatars</button>
+        <button class="audit-option" data-type="descriptions">Descriptions</button>
+        <button class="audit-option" data-type="songs">Songs</button>
+        <button class="audit-option" data-type="comments">Comments</button>
+    </div>
+    
+    <div class="audit-content">
+        <div class="audit-table" id="avatars-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Avatar</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profile in unapproved_avatars %}
+                    <tr>
+                        <td>{{ profile.user.username }}</td>
+                        <td>
+                            <img src="{{ url_for('profile.get_avatar', user_id = profile.user_id, filename = profile.avatar_filename) }}" 
+                                 alt="Avatar" class="avatar-preview">
+                        </td>
+                        <td>
+                            <form method="POST" action="{{ url_for('admin.process_avatar') }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="user_id" value="{{ profile.user_id }}">
+                                <div class="action-buttons">
+                                    <label>
+                                        <input type="radio" name="action" value="approve" required> Approve
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="action" value="deny" required> Deny
+                                    </label>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="reason-box">
+                                <input type="text" name="reason" placeholder="Reason (required if denying)" 
+                                       class="reason-input">
+                                <button type="submit" class="submit-btn">Submit</button>
+                            </div>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No avatars to review</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="audit-table" id="descriptions-table" style="display:none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profile in unapproved_descriptions %}
+                    <tr>
+                        <td>{{ profile.user.username }}</td>
+                        <td>{{ profile.description }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('admin.process_description') }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="user_id" value="{{ profile.user_id }}">
+                                <div class="action-buttons">
+                                    <label>
+                                        <input type="radio" name="action" value="approve" required> Approve
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="action" value="deny" required> Deny
+                                    </label>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="reason-box">
+                                <input type="text" name="reason" placeholder="Reason (required if denying)" 
+                                       class="reason-input">
+                                <button type="submit" class="submit-btn">Submit</button>
+                            </div>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No descriptions to review</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="audit-table" id="songs-table" style="display:none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>Cover</th>
+                        <th>Audio</th>
+                        <th>Uploader</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in unapproved_songs %}
+                    <tr>
+                        <td>{{ song.title }}</td>
+                        <td>{{ song.artist }}</td>
+                        <td>
+                            {% if song.cover_filename %}
+                        <img src="{{ url_for('song.serve_cover', filename=song.cover_path) }}" 
+                            alt="{{ song.title }} cover" class="song-cover-img">
+                        {% else %}
+                        <div class="song-cover-placeholder">
+                            {{ song.title|first|upper }}
+                        </div>
+                        {% endif %}
+                        </td>
+                        <td>
+                            <audio controls class="audio-player">
+                                <source src="{{url_for('song.serve_audio', filename=song.audio_path)}}">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </td>
+                        <td>{{ song.uploader.username }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('admin.process_song') }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="song_id" value="{{ song.id }}">
+                                <input type="hidden" name="song_title" value="{{ song.title }}">
+                                <div class="action-buttons">
+                                    <label>
+                                        <input type="radio" name="action" value="approve" required> Approve
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="action" value="deny" required> Deny
+                                    </label>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="reason-box">
+                                <input type="text" name="reason" placeholder="Reason (required if denying)" 
+                                       class="reason-input">
+                                <button type="submit" class="submit-btn">Submit</button>
+                            </div>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6">No songs to review</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="audit-table" id="comments-table" style="display:none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Comment</th>
+                        <th>Song</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comment in unapproved_comments %}
+                    <tr>
+                        <td>{{ comment.user.username }}</td>
+                        <td>{{ comment.content }}</td>
+                        <td>{{ comment.song.title }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('admin.process_comment') }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                <div class="action-buttons">
+                                    <label>
+                                        <input type="radio" name="action" value="approve" required> Approve
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="action" value="deny" required> Deny
+                                    </label>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div class="reason-box">
+                                <input type="text" name="reason" placeholder="Reason (required if denying)" 
+                                       class="reason-input">
+                                <button type="submit" class="submit-btn">Submit</button>
+                            </div>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">No comments to review</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script src="{{ url_for('static', filename='js/audit.js') }}"></script>
+{% endblock %}
