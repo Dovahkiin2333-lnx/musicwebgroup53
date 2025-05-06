@@ -12,7 +12,7 @@ WTF_CSRF_SECRET_KEY = "ziasdyfgfmfdy"
 HOSTNAME = '127.0.0.1'
 PORT = '3306'
 USERNAME = 'root'
-PASSWORD = '1dcda0446167059c'
+PASSWORD = '7355608'
 # DATABASE = 'musicweb'
 DB_URI = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/musicweb?charset=utf8mb4'
 SQLALCHEMY_DATABASE_URI = DB_URI

@@ -76,8 +76,6 @@ def index():
 
 
 
-
-
 @bp.route('/category', methods=['POST'])
 def category():
     keyword = request.form.get("keyword")
